@@ -2,20 +2,13 @@ package server
 
 import (
 	"net/http"
-	"strings"
 
 	"../service"
 )
 
 //CreateAppHandler init application handler
 func CreateAppHandler() *AppHandler {
-	return &AppHandler{
-		handlers: map[string]http.Handler{
-			"users": &userHandler{
-				userService: service.UserService{},
-			},
-		},
-	}
+	return &AppHandler{}
 }
 
 //AppHandler start api handler
@@ -24,14 +17,15 @@ type AppHandler struct {
 }
 
 func (a *AppHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	handlerPth := strings.Split(r.URL.Path[1:], "/")
-	if len(handlerPth) > 1 {
-		if handler, ok := a.handlers[handlerPth[1]]; ok {
-			handler.ServeHTTP(w, r)
-			return
-		}
-	}
 
-	http.Error(w, "Not Found", http.StatusNotFound)
+	usrServ := service.UserService{}
+	router := http.NewServeMux()
+	router.Handle("/api/users", &authHandler{usrServ})
+	router.Handle("/api/users/login", &authHandler{usrServ})
+	router.Handle("/api/user", AuthMiddleware(&userHandler{usrServ}))
+	router.Handle("/api/profiles/", AuthMiddleware(&profileHandler{}))
+	router.Handle("/api/articles", AuthMiddleware(&articleHandler{}))
+	router.Handle("/api/tags", &tagHandler{})
+	router.ServeHTTP(w, r)
 
 }

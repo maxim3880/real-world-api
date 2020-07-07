@@ -21,3 +21,8 @@ func GenerateJwtTocken(username string) string {
 	}
 	return ""
 }
+
+//ParseJwtAuthHeader return claims from jwt tocken
+func ParseJwtAuthHeader(authHeader string) {
+
+}
