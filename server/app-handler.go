@@ -3,17 +3,18 @@ package server
 import (
 	"net/http"
 
+	"../data"
 	"../service"
 )
 
 //CreateAppHandler init application handler
-func CreateAppHandler() *AppHandler {
-	return &AppHandler{}
+func CreateAppHandler(store data.Store) *AppHandler {
+	return &AppHandler{store}
 }
 
 //AppHandler start api handler
 type AppHandler struct {
-	handlers map[string]http.Handler
+	store data.Store
 }
 
 func (a *AppHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +26,7 @@ func (a *AppHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	router.Handle("/api/user", AuthMiddleware(&userHandler{usrServ}))
 	router.Handle("/api/profiles/", AuthMiddleware(&profileHandler{}))
 	router.Handle("/api/articles", AuthMiddleware(&articleHandler{}))
-	router.Handle("/api/tags", &tagHandler{})
+	router.Handle("/api/tags", &tagHandler{service.TagService{a.store}})
 	router.ServeHTTP(w, r)
 
 }

@@ -6,12 +6,13 @@ import (
 	"strings"
 	"testing"
 
+	"../data"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestUserHandler(t *testing.T) {
 
-	appHandler := CreateAppHandler()
+	appHandler := CreateAppHandler(data.CreatePostgresDbStore())
 	t.Run("check PUT user data", func(t *testing.T) {
 		reqBody := `{}`
 		req, _ := http.NewRequest(http.MethodPut, "/api/user", strings.NewReader(reqBody))
