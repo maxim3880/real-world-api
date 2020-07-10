@@ -1,14 +1,16 @@
 package model
 
+import "database/sql"
+
 //User represent table model of users
 type User struct {
-	ID       int    `json:"-" db:"id"`
-	Email    string `json:"email" db:"email"`
-	Username string `json:"username" db:"name"`
-	Password string `json:"-" db:"password"`
-	Token    string `json:"token"`
-	Bio      string `json:"bio" db:"bio"`
-	Image    string `json:"image" db:"image"`
+	ID       int            `json:"-" db:"id"`
+	Email    string         `json:"email" db:"email"`
+	Username string         `json:"username" db:"name"`
+	Password string         `json:"-" db:"password"`
+	Token    string         `json:"token"`
+	Bio      sql.NullString `json:"bio" db:"bio"`
+	Image    sql.NullString `json:"image" db:"image"`
 }
 
 //AuthRequestModel request model to login or sign up user
