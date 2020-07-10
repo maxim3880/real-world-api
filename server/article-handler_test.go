@@ -13,8 +13,8 @@ import (
 
 func TestArticleHandler(t *testing.T) {
 
-	tkn := "Bearer " + service.GenerateJwtTocken("test-email@test.com")
-	appHandler := CreateAppHandler(data.CreatePostgresDbStore())
+	tkn := "Bearer " + service.GenerateJwtTocken("test-email@test.com", 1)
+	appHandler := CreateAppHandler(data.CreateImMemmoryStore("TestArticleHandlerDataSource"))
 	t.Run("get profile data", func(t *testing.T) {
 		reqBody := `{}`
 		req, _ := http.NewRequest(http.MethodGet, "/api/articles", strings.NewReader(reqBody))

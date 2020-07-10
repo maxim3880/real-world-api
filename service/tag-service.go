@@ -7,7 +7,7 @@ import (
 
 //TagService represent all methods of tags
 type TagService struct {
-	Store data.Store
+	data.Store
 }
 
 //GetAll return all tags from db

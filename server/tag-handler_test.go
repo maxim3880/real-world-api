@@ -14,7 +14,7 @@ import (
 
 func TestTagHandler(t *testing.T) {
 
-	appHandler := CreateAppHandler(data.CreateImMemmoryStore())
+	appHandler := CreateAppHandler(data.CreateImMemmoryStore("TestTagHandlerDataSource"))
 	t.Run("get tags list", func(t *testing.T) {
 		req, _ := http.NewRequest(http.MethodGet, "/api/tags", nil)
 
