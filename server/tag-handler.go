@@ -1,10 +1,15 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
+
+	"../model"
+	"../service"
 )
 
 type tagHandler struct {
+	service service.TagService
 }
 
 func (u *tagHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -18,4 +23,11 @@ func (u *tagHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (u *tagHandler) GetTags(w http.ResponseWriter, r *http.Request) {
+	tags := u.service.GetAll()
+	respModel := model.ResponseTagModel{}
+	for _, val := range tags {
+		respModel.Tags = append(respModel.Tags, val.Name)
+	}
+	w.Header().Add("content-type", "application/json; charset=utf-8")
+	json.NewEncoder(w).Encode(respModel)
 }

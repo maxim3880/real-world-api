@@ -5,11 +5,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"../data"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAppHandler(t *testing.T) {
-	appHandler := CreateAppHandler()
+	appHandler := CreateAppHandler(data.CreatePostgresDbStore())
 	t.Run("check is handler by path correct", func(t *testing.T) {
 
 		req, _ := http.NewRequest(http.MethodGet, "/api", nil)

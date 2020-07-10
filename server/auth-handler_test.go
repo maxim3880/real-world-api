@@ -7,13 +7,14 @@ import (
 	"strings"
 	"testing"
 
+	"../data"
 	"../model"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAuthHandler(t *testing.T) {
 
-	appHandler := CreateAppHandler()
+	appHandler := CreateAppHandler(data.CreatePostgresDbStore())
 	t.Run("check POST user login", func(t *testing.T) {
 		reqBody := `{
 			"user":{
