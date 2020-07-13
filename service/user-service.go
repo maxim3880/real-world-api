@@ -4,9 +4,11 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strings"
 
 	"../data"
 	"../model"
+	"github.com/fatih/structs"
 )
 
 //UserService represent user logic
@@ -54,4 +56,24 @@ func (us *UserService) AddUser(data model.AuthRequestModel) (user model.User, er
 func (us *UserService) GetUserById(id int) (user model.User, err error) {
 	err = us.Store.Get(&user, "SELECT * FROM users where id=$1", id)
 	return user, err
+}
+
+func (us *UserService) UpdateUser(data model.UpdateUserRequestModel, id int) (user model.User, err error) {
+	val := structs.Map(data.User)
+	columns := []string{}
+	for col := range val {
+		columns = append(columns, col+"=:"+col)
+	}
+	conCol := strings.Join(columns, ", ")
+	val["id"] = id
+	_, err = us.Store.Update("UPDATE users SET "+conCol+" WHERE id=:id", val)
+	if err != nil {
+		return user, err
+	}
+	user, err = us.GetUserById(id)
+	if err != nil {
+		return
+	}
+	user.Token = GenerateJwtTocken(user.Email, user.ID)
+	return
 }

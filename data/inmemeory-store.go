@@ -6,6 +6,7 @@ import (
 	"database/sql"
 
 	"github.com/jmoiron/sqlx"
+	//Register postgres in memory driver
 	_ "github.com/proullon/ramsql/driver"
 )
 
@@ -63,6 +64,7 @@ func (s *InMemoryStore) Select(dest interface{}, query string, args ...interface
 	return db.Select(dest, query, args...)
 }
 
+//Get return one record from store
 func (s *InMemoryStore) Get(dest interface{}, query string, args ...interface{}) error {
 	db, err := sqlx.Connect("ramsql", s.source)
 	if err != nil {
@@ -72,6 +74,7 @@ func (s *InMemoryStore) Get(dest interface{}, query string, args ...interface{})
 	return db.Get(dest, query, args...)
 }
 
+//Insert represent insert dbquery with returning inserted id value
 func (s *InMemoryStore) Insert(query string, args ...interface{}) (id int) {
 	query = query + " RETURNING id"
 	db, err := sqlx.Connect("ramsql", s.source)
@@ -81,4 +84,14 @@ func (s *InMemoryStore) Insert(query string, args ...interface{}) (id int) {
 	defer db.Close()
 	db.QueryRowx(query, args...).Scan(&id)
 	return id
+}
+
+//Update represent update dbquery
+func (s *InMemoryStore) Update(query string, args map[string]interface{}) (sql.Result, error) {
+	db, err := sqlx.Connect("ramsql", s.source)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return db.NamedExec(query, args)
 }

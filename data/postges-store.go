@@ -1,9 +1,11 @@
 package data
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
+	//Register postgres driver
 	_ "github.com/lib/pq"
 )
 
@@ -69,6 +71,7 @@ func (s *PostgresDbStore) Get(dest interface{}, query string, args ...interface{
 	return db.Get(dest, query, args...)
 }
 
+//Insert represent insert dbquery with returning inserted id value
 func (s *PostgresDbStore) Insert(query string, args ...interface{}) (id int) {
 	query = query + " RETURNING id"
 	db, err := sqlx.Connect("postgres", connStr)
@@ -78,4 +81,14 @@ func (s *PostgresDbStore) Insert(query string, args ...interface{}) (id int) {
 	defer db.Close()
 	db.QueryRowx(query, args...).Scan(&id)
 	return id
+}
+
+//Update represent update dbquery
+func (s *PostgresDbStore) Update(query string, args map[string]interface{}) (sql.Result, error) {
+	db, err := sqlx.Connect("postgres", connStr)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	return db.NamedExec(query, args)
 }
