@@ -9,20 +9,25 @@ import (
 const signatureKey = "application_signature_key"
 
 //GenerateJwtTocken return correct auth jwt tocken by user name
-func GenerateJwtTocken(username string) string {
+func GenerateJwtTocken(username string, id int) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user": username,
-		"exp":  time.Now().Add(time.Hour * time.Duration(1)).Unix(),
-		"iat":  time.Now().Unix(),
+		"user":   username,
+		"exp":    time.Now().Add(time.Hour * time.Duration(1)).Unix(),
+		"iat":    time.Now().Unix(),
+		"userId": id,
 	})
-	tokenString, err := token.SignedString([]byte(signatureKey))
+	tokenString, err := token.SignedString(getKeyAsByteArray())
 	if err == nil {
 		return tokenString
 	}
 	return ""
 }
 
-//ParseJwtAuthHeader return claims from jwt tocken
-func ParseJwtAuthHeader(authHeader string) {
+//GetJwtValidationKey return signature key
+func GetJwtValidationKey(token *jwt.Token) (interface{}, error) {
+	return getKeyAsByteArray(), nil
+}
 
+func getKeyAsByteArray() []byte {
+	return []byte(signatureKey)
 }

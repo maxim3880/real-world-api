@@ -1,16 +1,33 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"../data"
+	"../model"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAppHandler(t *testing.T) {
-	appHandler := CreateAppHandler(data.CreatePostgresDbStore())
+	appHandler := CreateAppHandler(data.CreateImMemmoryStore("TestAppHandlerDataSource"))
+	t.Run("check POST send empty body", func(t *testing.T) {
+		reqBody := ``
+		req, _ := http.NewRequest(http.MethodPost, "/api/users/login", strings.NewReader(reqBody))
+		req.Header.Set("content-type", "application/json; charset=utf-8")
+		response := httptest.NewRecorder()
+
+		appHandler.ServeHTTP(response, req)
+		var result model.ValidationError
+		json.NewDecoder(response.Body).Decode(&result)
+
+		assert.Equal(t, http.StatusBadRequest, response.Code)
+		assert.NotEmpty(t, result.Body)
+		assert.Equal(t, model.ErrorMsgs["bodyNotEmpty"], result.Body[0])
+	})
 	t.Run("check is handler by path correct", func(t *testing.T) {
 
 		req, _ := http.NewRequest(http.MethodGet, "/api", nil)

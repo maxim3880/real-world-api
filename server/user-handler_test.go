@@ -12,7 +12,7 @@ import (
 
 func TestUserHandler(t *testing.T) {
 
-	appHandler := CreateAppHandler(data.CreatePostgresDbStore())
+	appHandler := CreateAppHandler(data.CreateImMemmoryStore("TestUserHandlerDataSource"))
 	t.Run("check PUT user data", func(t *testing.T) {
 		reqBody := `{}`
 		req, _ := http.NewRequest(http.MethodPut, "/api/user", strings.NewReader(reqBody))

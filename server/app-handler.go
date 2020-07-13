@@ -9,6 +9,7 @@ import (
 
 //CreateAppHandler init application handler
 func CreateAppHandler(store data.Store) *AppHandler {
+	service.SetValidatorTags()
 	return &AppHandler{store}
 }
 
@@ -19,14 +20,23 @@ type AppHandler struct {
 
 func (a *AppHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	usrServ := service.UserService{}
 	router := http.NewServeMux()
-	router.Handle("/api/users", &authHandler{usrServ})
-	router.Handle("/api/users/login", &authHandler{usrServ})
-	router.Handle("/api/user", AuthMiddleware(&userHandler{usrServ}))
-	router.Handle("/api/profiles/", AuthMiddleware(&profileHandler{}))
-	router.Handle("/api/articles", AuthMiddleware(&articleHandler{}))
-	router.Handle("/api/tags", &tagHandler{service.TagService{a.store}})
+	for p, hand := range a.GetRoutesWithHanders() {
+		router.Handle(p, hand)
+	}
 	router.ServeHTTP(w, r)
 
+}
+
+//GetRoutesWithHanders return all api path with endpoint handler
+func (a *AppHandler) GetRoutesWithHanders() map[string]http.Handler {
+	userserv := service.UserService{Store: a.store}
+	return map[string]http.Handler{
+		"/api/users":       validationMiddleware(&authHandler{userserv}),
+		"/api/users/login": validationMiddleware(&authHandler{userserv}),
+		"/api/user":        validationMiddleware(&userHandler{userserv}),
+		"/api/profiles/":   validationMiddleware(&profileHandler{}),
+		"/api/articles":    validationMiddleware(&articleHandler{}),
+		"/api/tags":        &tagHandler{service.TagService{Store: a.store}},
+	}
 }
