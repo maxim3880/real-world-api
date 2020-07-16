@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"./data"
-	"./server"
+	"github.com/maxim3880/real-world-api/data"
+	"github.com/maxim3880/real-world-api/server"
 )
 
 func main() {

@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"../data"
-	"../service"
+	"github.com/maxim3880/real-world-api/data"
+	"github.com/maxim3880/real-world-api/service"
 	"github.com/stretchr/testify/assert"
 )
 

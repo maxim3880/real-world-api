@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"../model"
-	"../service"
+	"github.com/maxim3880/real-world-api/model"
+	"github.com/maxim3880/real-world-api/service"
 )
 
 type tagHandler struct {

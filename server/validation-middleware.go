@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"../model"
-	"../service"
+	"github.com/maxim3880/real-world-api/model"
+	"github.com/maxim3880/real-world-api/service"
 	"github.com/dgrijalva/jwt-go"
 )
 

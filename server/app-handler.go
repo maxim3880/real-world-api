@@ -3,8 +3,8 @@ package server
 import (
 	"net/http"
 
-	"../data"
-	"../service"
+	"github.com/maxim3880/real-world-api/data"
+	"github.com/maxim3880/real-world-api/service"
 )
 
 //CreateAppHandler init application handler

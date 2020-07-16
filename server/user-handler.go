@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"../model"
-	"../service"
+	"github.com/maxim3880/real-world-api/model"
+	"github.com/maxim3880/real-world-api/service"
 )
 
 type userHandler struct {

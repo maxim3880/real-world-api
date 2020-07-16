@@ -1,8 +1,8 @@
 package service
 
 import (
-	"../data"
-	"../model"
+	"github.com/maxim3880/real-world-api/data"
+	"github.com/maxim3880/real-world-api/model"
 )
 
 //TagService represent all methods of tags

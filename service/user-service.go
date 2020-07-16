@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"strings"
 
-	"../data"
-	"../model"
 	"github.com/fatih/structs"
+	"github.com/maxim3880/real-world-api/data"
+	"github.com/maxim3880/real-world-api/model"
 )
 
 //UserService represent user logic
