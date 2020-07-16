@@ -29,7 +29,7 @@ func (u *userHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		fmt.Println(userID)
 	}
-	user, err := u.userService.GetUserById(int(userID))
+	user, err := u.userService.GetUserByID(int(userID))
 	u.prepareRespData(&user, err, w)
 }
 
@@ -51,6 +51,7 @@ func (u *userHandler) prepareRespData(user *model.User, err error, w http.Respon
 	if err != nil {
 		res = model.ValidationError{Body: []string{err.Error()}}
 	} else {
+		user.Token = service.GenerateJwtTocken(user.Email, user.ID)
 		res = model.ResponseUserModel{User: user}
 	}
 	js, _ := json.Marshal(res)

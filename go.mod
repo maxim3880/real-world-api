@@ -8,5 +8,6 @@ require (
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/lib/pq v1.7.0
 	github.com/proullon/ramsql v0.0.0-20181213202341-817cee58a244
+	github.com/stretchr/testify v1.6.1
 	gopkg.in/validator.v2 v2.0.0-20200605151824-2b28d334fa05
 )

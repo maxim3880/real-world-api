@@ -32,6 +32,7 @@ func (us *UserService) LoginUser(data model.AuthRequestModel) (user model.User, 
 	return user, err
 }
 
+//RegisterUser method for login user by input model
 func (us *UserService) RegisterUser(data model.AuthRequestModel) (user model.User, err error) {
 	user = model.User{}
 	err = us.Store.Get(&user, "SELECT * FROM users WHERE email=$1 OR name=$2", data.User.Email, data.User.Username)
@@ -47,17 +48,20 @@ func (us *UserService) RegisterUser(data model.AuthRequestModel) (user model.Use
 	return user, err
 }
 
+//AddUser represent adding one user to db
 func (us *UserService) AddUser(data model.AuthRequestModel) (user model.User, err error) {
 	id := us.Store.Insert("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", data.User.Username, data.User.Email, data.User.Password)
-	user, err = us.GetUserById(id)
+	user, err = us.GetUserByID(id)
 	return
 }
 
-func (us *UserService) GetUserById(id int) (user model.User, err error) {
+//GetUserByID get user model by user ID from db
+func (us *UserService) GetUserByID(id int) (user model.User, err error) {
 	err = us.Store.Get(&user, "SELECT * FROM users where id=$1", id)
 	return user, err
 }
 
+//UpdateUser update user data table in db
 func (us *UserService) UpdateUser(data model.UpdateUserRequestModel, id int) (user model.User, err error) {
 	val := structs.Map(data.User)
 	columns := []string{}
@@ -70,10 +74,9 @@ func (us *UserService) UpdateUser(data model.UpdateUserRequestModel, id int) (us
 	if err != nil {
 		return user, err
 	}
-	user, err = us.GetUserById(id)
+	user, err = us.GetUserByID(id)
 	if err != nil {
 		return
 	}
-	user.Token = GenerateJwtTocken(user.Email, user.ID)
 	return
 }

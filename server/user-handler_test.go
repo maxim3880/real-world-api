@@ -30,7 +30,7 @@ func TestUserHandler(t *testing.T) {
 
 		appHandler.ServeHTTP(response, req)
 
-		assert.Equal(t, http.StatusUnauthorized, response.Code)
+		assert.Equal(t, http.StatusOK, response.Code)
 	})
 	t.Run("check PUT user data", func(t *testing.T) {
 		reqBody := `{}`
