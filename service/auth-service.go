@@ -14,7 +14,7 @@ func GenerateJwtTocken(username string, id int) string {
 		"user":   username,
 		"exp":    time.Now().Add(time.Hour * time.Duration(1)).Unix(),
 		"iat":    time.Now().Unix(),
-		"userId": id,
+		"userID": id,
 	})
 	tokenString, err := token.SignedString(getKeyAsByteArray())
 	if err == nil {

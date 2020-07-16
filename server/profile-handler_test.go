@@ -13,7 +13,7 @@ import (
 
 func TestProfileHandler(t *testing.T) {
 
-	tkn := "Bearer " + service.GenerateJwtTocken("test-email@test.com", 1)
+	tkn := "Token " + service.GenerateJwtTocken("test-email@test.com", 1)
 	appHandler := CreateAppHandler(data.CreateImMemmoryStore("TestProfileHandlerDataSource"))
 	t.Run("get profile data", func(t *testing.T) {
 		reqBody := `{}`
