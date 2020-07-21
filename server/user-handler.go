@@ -10,6 +10,7 @@ import (
 )
 
 type userHandler struct {
+	baseHandler
 	userService service.UserService
 }
 

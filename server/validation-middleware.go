@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/maxim3880/real-world-api/model"
 	"github.com/maxim3880/real-world-api/service"
-	"github.com/dgrijalva/jwt-go"
 )
 
 var claim jwt.MapClaims = nil
@@ -42,7 +42,7 @@ func getValidationChain() []http.HandlerFunc {
 }
 
 func validateEmptyBody(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet && r.Body == http.NoBody {
+	if r.Method != http.MethodGet && r.Body == http.NoBody && !contains(getRoutesWithoutBody(), r.URL.Path) {
 		err := model.ValidationError{Body: []string{}}
 		err.Body = append(err.Body, model.ErrorMsgs["bodyNotEmpty"])
 		panic(err)
@@ -89,16 +89,30 @@ func writeUnauthorized(err interface{}, w http.ResponseWriter) {
 	json.NewEncoder(w).Encode(res)
 }
 
-func getRoutesWithAuth() []string {
-	return []string{
-		"/api/user",
+func getRoutesWithAuth() map[string]int {
+	return map[string]int{
+		"/api/user":      0,
+		"/api/profiles/": 1,
 	}
 }
 
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
+func getRoutesWithoutBody() map[string]int {
+	return map[string]int{
+		"/api/profiles/": 1,
+	}
+}
+
+func contains(s map[string]int, e string) bool {
+	for pth, comType := range s {
+		switch comType {
+		case 0:
+			if pth == e {
+				return true
+			}
+		case 1:
+			if strings.HasPrefix(e, pth) {
+				return true
+			}
 		}
 	}
 	return false

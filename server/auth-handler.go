@@ -11,6 +11,7 @@ import (
 )
 
 type authHandler struct {
+	baseHandler
 	userService service.UserService
 }
 

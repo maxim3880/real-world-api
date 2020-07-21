@@ -17,7 +17,7 @@ func TestProfileHandler(t *testing.T) {
 	appHandler := CreateAppHandler(data.CreateImMemmoryStore("TestProfileHandlerDataSource"))
 	t.Run("get profile data", func(t *testing.T) {
 		reqBody := `{}`
-		req, _ := http.NewRequest(http.MethodGet, "/api/profiles/testname", strings.NewReader(reqBody))
+		req, _ := http.NewRequest(http.MethodGet, "/api/profiles/Maxim", strings.NewReader(reqBody))
 
 		req.Header.Add("Authorization", tkn)
 		response := httptest.NewRecorder()
@@ -28,7 +28,7 @@ func TestProfileHandler(t *testing.T) {
 	})
 	t.Run("post profile follow data", func(t *testing.T) {
 		reqBody := `{}`
-		req, _ := http.NewRequest(http.MethodPost, "/api/profiles/testname/follow", strings.NewReader(reqBody))
+		req, _ := http.NewRequest(http.MethodPost, "/api/profiles/Maxim/follow", strings.NewReader(reqBody))
 		req.Header.Add("Authorization", tkn)
 
 		response := httptest.NewRecorder()
@@ -39,7 +39,7 @@ func TestProfileHandler(t *testing.T) {
 	})
 	t.Run("delete profile follow data", func(t *testing.T) {
 		reqBody := `{}`
-		req, _ := http.NewRequest(http.MethodDelete, "/api/profiles/testname/follow", strings.NewReader(reqBody))
+		req, _ := http.NewRequest(http.MethodDelete, "/api/profiles/Maxim/follow", strings.NewReader(reqBody))
 		req.Header.Add("Authorization", tkn)
 
 		response := httptest.NewRecorder()

@@ -9,4 +9,5 @@ type Store interface {
 	Get(interface{}, string, ...interface{}) error
 	Insert(string, ...interface{}) int
 	Update(string, map[string]interface{}) (sql.Result, error)
+	Delete(string, ...interface{}) (sql.Result, error)
 }
