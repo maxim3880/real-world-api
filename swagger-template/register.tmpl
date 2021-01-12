@@ -1,0 +1,42 @@
+
+type FiberRouter interface {
+	Use(args ...interface{}) externalRef0.Router
+
+	Get(path string, handlers ...externalRef0.Handler) externalRef0.Router
+	Head(path string, handlers ...externalRef0.Handler) externalRef0.Router
+	Post(path string, handlers ...externalRef0.Handler) externalRef0.Router
+	Put(path string, handlers ...externalRef0.Handler) externalRef0.Router
+	Delete(path string, handlers ...externalRef0.Handler) externalRef0.Router
+	Connect(path string, handlers ...externalRef0.Handler) externalRef0.Router
+	Options(path string, handlers ...externalRef0.Handler) externalRef0.Router
+	Trace(path string, handlers ...externalRef0.Handler) externalRef0.Router
+	Patch(path string, handlers ...externalRef0.Handler) externalRef0.Router
+
+	Add(method, path string, handlers ...externalRef0.Handler) externalRef0.Router
+	Static(prefix, root string, config ...externalRef0.Static) externalRef0.Router
+	All(path string, handlers ...externalRef0.Handler) externalRef0.Router
+
+	Group(prefix string, handlers ...externalRef0.Handler) externalRef0.Router
+
+	Mount(prefix string, fiber *externalRef0.App) externalRef0.Router
+}
+
+// RegisterHandlers adds each server route to the FiberRouter.
+func RegisterHandlers(router FiberRouter, si ServerInterface) {
+    RegisterHandlersWithBaseURL(router, si, "")
+}
+
+// Registers handlers, and prepends BaseURL to the paths, so that the paths
+// can be served under a prefix.
+func RegisterHandlersWithBaseURL(router FiberRouter, si ServerInterface, baseURL string) {
+{{if .}}
+    wrapper := ServerInterfaceWrapper{
+        Handler: si,
+    }
+{{end}}
+{{range .}}
+    router.Add({{ printf "%q" .Method }}, {{ printf "%q" .Path | swaggerUriToEchoUri}}, func(ctx *externalRef0.Ctx) error {
+        return wrapper.{{.OperationId}}(ctx)
+    })
+{{end}}
+}

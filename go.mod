@@ -3,11 +3,13 @@ module github.com/maxim3880/real-world-api
 go 1.14
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/fatih/structs v1.1.0
-	github.com/jmoiron/sqlx v1.2.0
-	github.com/lib/pq v1.7.0
-	github.com/proullon/ramsql v0.0.0-20181213202341-817cee58a244
-	github.com/stretchr/testify v1.6.1
-	gopkg.in/validator.v2 v2.0.0-20200605151824-2b28d334fa05
+	github.com/andybalholm/brotli v1.0.1 // indirect
+	github.com/deepmap/oapi-codegen v1.4.2
+	github.com/getkin/kin-openapi v0.26.0
+	github.com/gofiber/fiber v1.14.6
+	github.com/gofiber/fiber/v2 v2.3.2
+	github.com/klauspost/compress v1.11.6 // indirect
+	github.com/labstack/echo/v4 v4.1.11
+	github.com/valyala/fasthttp v1.19.0 // indirect
+	golang.org/x/sys v0.0.0-20210110051926-789bb1bd4061 // indirect
 )
